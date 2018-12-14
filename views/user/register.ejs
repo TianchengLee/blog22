@@ -54,11 +54,13 @@
           type: 'post',
           data: $('#form').serialize(),
           success: function (result) {
-            console.log(result)
-            if (result.status === 200) {
-              alert(result.msg)
-              location.href = '/login'
-            }
+            // console.log(result)
+            alert(result.msg)
+            location.href = '/login'
+          },
+          error: function (err) {
+            // console.log('这是错误信息:',err)
+            alert(err.responseJSON.msg)
           }
         })
         return false

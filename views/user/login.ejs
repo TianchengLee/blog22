@@ -32,7 +32,8 @@
     </div>
 
     <div class="form-group">
-      <input type="password" name="password" id="password" class="form-control input-lg" placeholder="密码" required value="123">
+      <input type="password" name="password" id="password" class="form-control input-lg" placeholder="密码" required
+        value="123">
     </div>
 
     <div class="form-group">
@@ -45,6 +46,27 @@
   </form>
 
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('#form').on('submit', function () {
+        $.ajax({
+          url: '/login', // 请求本域的  /register  URL
+          type: 'post',
+          data: $('#form').serialize(),
+          success: function (result) {
+            // console.log(result)
+            alert(result.msg)
+            location.href = '/'
+          },
+          error: function (err) {
+            // console.log('这是错误信息:',err)
+            alert(err.responseJSON.msg)
+          }
+        })
+        return false
+      })
+    })
+  </script>
 </body>
 
 </html>

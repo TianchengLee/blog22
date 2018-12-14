@@ -64,6 +64,17 @@ app.get('/login', (req, res) => {
   res.render('./user/login', {})
 })
 
+app.post('/login', (req, res) => {
+  // console.log(req.body)
+  // 1. 直接去数据库执行查询语句  条件 username和password
+  const loginSql = 'select * from users where username = ? and password = ?'
+  conn.query(loginSql, [req.body.username, req.body.password], (err, result) => {
+    if (err || result.length === 0) return res.status(400).send({ status: 400, msg: '登录失败!请重试!' })
+    // 登录成功
+    res.send({ status: 200, msg: '登录成功!' })
+  })
+})
+
 app.listen(80, () => {
   console.log('http://127.0.0.1');
 })
