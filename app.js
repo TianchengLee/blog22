@@ -12,7 +12,7 @@ app.set('view engine', 'ejs')
 // app.set('views', './views')
 
 app.get('/', (req, res) => {
-  res.render('index', {test: '谢俊进小米'})
+  res.render('index', {})
 })
 
 app.listen(80, () => {
