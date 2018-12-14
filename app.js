@@ -1,6 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
+
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // 静态资源托管
 app.use('/node_modules', express.static('./node_modules'))
@@ -17,6 +20,15 @@ app.get('/', (req, res) => {
 
 app.get('/register', (req, res) => {
   res.render('./user/register', {})
+})
+
+app.post('/register', (req, res) => {
+  console.log(req.body)
+  // res.send('ok')
+  // 让浏览器跳到登录页
+  // 302重定向
+  // res.redirect('/login')
+  res.send({ status: 200, msg: 'ok' })
 })
 
 app.get('/login', (req, res) => {

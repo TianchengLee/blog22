@@ -25,7 +25,7 @@
 </head>
 
 <body>
-  <form id="form">
+  <form id="form" action="/register" method="POST">
     <h1>注册页面</h1>
     <div class="form-group">
       <input type="text" name="username" id="username" class="form-control input-lg" placeholder="用户名" required>
@@ -45,6 +45,25 @@
   </form>
 
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('#form').on('submit', function () {
+        // console.log('ok')
+        $.ajax({
+          url: '/register', // 请求本域的  /register  URL
+          type: 'post',
+          data: $('#form').serialize(),
+          success: function (result) {
+            console.log(result)
+            if (result.status === 200) {
+              alert('注册成功!')
+            }
+          }
+        })
+        return false
+      })
+    })
+  </script>
 </body>
 
 </html>
