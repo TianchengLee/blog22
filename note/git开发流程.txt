@@ -1,0 +1,64 @@
+关联远程仓库并提交代码的步骤
+
+第一步: 将远端仓库克隆到本地, 只需要做一次
+git clone
+
+第二步: 修改完代码后,将代码添加到暂存区
+git add .
+
+第三步: 将代码提交到本地版本库
+git commit -m "message"
+
+第四步: 将本地版本库中的代码推到远程仓库中
+git push
+
+在每次开发前一定要先执行:
+git pull 保证当前本地版本库和远程仓库版本一致
+
+
+其他重要指令, 分支相关:
+git branch 查看所有分支
+git branch [分支名]  创建分支
+git checkout [分支名] 切换到指定分支
+git checkout -b [分支名] 创建分支并切换到新创建的分支
+
+git reset 千万不要在master分支使用
+
+
+分支开发流程:
+
+第一步: 创建分支并切换到指定分支
+git checkout -b feature
+
+第二步: 修改代码
+
+第三步: 将代码添加到暂存区
+git add .
+
+第四步: 将代码提交到版本库
+git commit -m "真牛逼"
+
+第五步: 将本地分支上传到远程仓库
+$ git push
+fatal: The current branch feature has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin feature
+
+由于本地仓库新建的分支, 远程仓库没有新创建的分支, 所以需要执行以下指令将本地分支上传到远程仓库
+
+git push --set-upstream origin feature
+
+本地所有操作就此结束
+
+在github中, 打开branch, 点击feature分支右侧的new pull request 打开PR合并代码到主分支
+
+合并完成后删除远程的分支
+
+在本地切换到master分支, 执行:
+
+git pull
+
+删除本地分支
+
+git branch -d feature
