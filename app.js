@@ -2,6 +2,9 @@ const express = require('express')
 
 const app = express()
 
+// 静态资源托管
+app.use('/node_modules', express.static('./node_modules'))
+
 // 设置模板引擎
 app.set('view engine', 'ejs')
 
