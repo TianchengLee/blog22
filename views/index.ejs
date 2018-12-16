@@ -3,21 +3,4 @@
 
 <h1>文章列表</h1>
 
-<script>
-  $('#btn-logout').on('click', function () {
-    // console.log('我要退出!')
-    $.ajax({
-      url: '/logout',
-      type: 'get',
-      success: function (result) {
-        // console.log(result)
-        if (result.status === 200) {
-          alert(result.msg)
-          location.href = '/'
-        }
-      }
-    })
-  })
-</script>
-
 <%- include('./common/footer.ejs') %>

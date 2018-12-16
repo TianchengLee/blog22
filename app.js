@@ -19,6 +19,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
+  // 如果不设置过期时间  默认 关闭浏览器即过期, 无法存储有效的cookie
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }
 }))
 
