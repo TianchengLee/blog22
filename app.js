@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
+const session = require('express-session')
 
 // app.use() : 注册中间件
 // app.set() : 设置一些配置的  例如 views 设置模板存放目录  view engine 设置默认的模板引擎
@@ -13,6 +14,12 @@ const path = require('path')
 // res.redirect() : 重定向
 
 const app = express()
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -41,11 +48,17 @@ fs.readdir('./routes', (err, files) => {
     // app.use(require('./routes/' + filename))
 
     // 绝对路径引入
-    let filePath = path.join(__dirname, './routes/' + filename)
+    // let 和 const 都有块级作用域
+    const filePath = path.join(__dirname, './routes/' + filename)
     // console.log(filePath)
     app.use(require(filePath))
   })
 })
+
+// 循环10次  就有10个单独的作用域  并不会对a重新赋值 每次循环都是一个新的a
+// for (let i = 0; i < 10; i++) {
+//   const a = 10
+// }
 
 app.listen(80, () => {
   console.log('http://127.0.0.1');
