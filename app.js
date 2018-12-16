@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const fs = require('fs')
+const path = require('path')
 
 // app.use() : 注册中间件
 // app.set() : 设置一些配置的  例如 views 设置模板存放目录  view engine 设置默认的模板引擎
@@ -28,9 +29,23 @@ app.set('view engine', 'ejs')
 // const indexRouter = require('./routes/index')
 // app.use(indexRouter)
 
-app.use(require('./routes/index'))
+// app.use(require('./routes/index'))
+// app.use(require('./routes/user'))
 
-app.use(require('./routes/user'))
+// 使用fs模块读取routes目录下所有的文件名
+fs.readdir('./routes', (err, files) => {
+  if (err) return console.log(err.message)
+  files.forEach(filename => {
+    // 相对路径引入
+    // console.log('./routes/' + filename)
+    // app.use(require('./routes/' + filename))
+
+    // 绝对路径引入
+    let filePath = path.join(__dirname, './routes/' + filename)
+    // console.log(filePath)
+    app.use(require(filePath))
+  })
+})
 
 app.listen(80, () => {
   console.log('http://127.0.0.1');
