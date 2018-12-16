@@ -55,7 +55,7 @@
           data: $('#form').serialize(),
           success: function (result) {
             // console.log(result)
-            alert(result.msg)
+            alert(result.msg) // alert confirm prompt 都会阻塞渲染
             location.href = '/login'
           },
           error: function (err) {

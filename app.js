@@ -10,6 +10,15 @@ const conn = mysql.createConnection({
   database: 'blog'
 })
 
+// app.use() : 注册中间件
+// app.set() : 设置一些配置的  例如 views 设置模板存放目录  view engine 设置默认的模板引擎
+// app.get / post / delete / option / head / put  监听不同请求方式的方法
+// app.get('/')  app.post('/')
+// res.render() : 渲染, 必须设置好模板引擎后才可以使用
+// res.send() : 响应数据(对象数组字符串, 不能是number)  如果传入数组字符串, express内部执行了JSON.stringfy() 将对象序列化为字符串
+// res.status() : 改变响应的状态码
+// res.redirect() : 重定向
+
 const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -69,6 +78,7 @@ app.post('/login', (req, res) => {
   // 1. 直接去数据库执行查询语句  条件 username和password
   const loginSql = 'select * from users where username = ? and password = ?'
   conn.query(loginSql, [req.body.username, req.body.password], (err, result) => {
+    // 如果查询出错 或者没有查询到结果 就提示登录失败
     if (err || result.length === 0) return res.status(400).send({ status: 400, msg: '登录失败!请重试!' })
     // 登录成功
     res.send({ status: 200, msg: '登录成功!' })
