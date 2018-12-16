@@ -17,14 +17,14 @@ module.exports = {
     let userInfo = req.body
     // 1. 表单校验
     if (!userInfo.username || !userInfo.nickname || !userInfo.password) return res.status(400).send({ status: 400, msg: '请输入正确的表单信息!' })
-  
+
     // 2. 查重  判断用户名是否已经存在  连接数据库查询
     const chachongSql = 'select count(*) as count from users where username = ?'
     conn.query(chachongSql, userInfo.username, (err, result) => {
       if (err) return res.status(500).send({ status: 500, msg: '查重失败!请重试!' })
       // result[0].count // 为0表示没有重复, 可以用
       if (result[0].count !== 0) return res.status(400).send({ status: 400, msg: '用户名重复!请重试!' })
-  
+
       // 能到此处 说明可以注册
       // 添加ctime字段
       userInfo.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -57,6 +57,13 @@ module.exports = {
       req.session.isLogin = true
       // console.log(req.session)
       res.send({ status: 200, msg: '登录成功!' })
+    })
+  },
+  getLogoutHandler(req, res) {
+    req.session.destroy((err) => {
+      // cannot access session here
+      // 在这里不能访问session了  已经销毁完成了
+      res.send({status: 200, msg: '退出登录成功!'})
     })
   }
 }

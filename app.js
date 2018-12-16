@@ -18,7 +18,8 @@ const app = express()
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }
 }))
 
 app.use(bodyParser.urlencoded({ extended: false }))
