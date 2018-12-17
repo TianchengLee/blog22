@@ -1,0 +1,20 @@
+<%- include('../common/header.ejs') %>
+
+<link rel="stylesheet" href="/node_modules/mditor/dist/css/mditor.min.css" />
+<div class="container">
+  <h1 class="text-center">
+    <%= articleInfo.title %>
+    <% if (isLogin && userInfo.id === articleInfo.author_id) { %>
+      <a class="btn btn-info pull-right">编辑</a>
+    <% } %>
+  </h1>
+  <hr>
+
+  <div class="markdown-body">
+
+    <%- articleInfo.content%>
+
+  </div>
+</div>
+
+<%- include('../common/footer.ejs') %>
