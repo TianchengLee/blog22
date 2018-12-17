@@ -8,6 +8,8 @@ router.post('/register', ctrl.postRegisterHandler)
 
 router.get('/login', ctrl.getLoginHandler)
 
+router.get('/login/reauth', ctrl.getLoginHandler)
+
 router.post('/login', ctrl.postLoginHandler)
 
 router.get('/logout', ctrl.getLogoutHandler)

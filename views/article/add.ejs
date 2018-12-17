@@ -31,10 +31,35 @@
 
     //获取或设置编辑器的值
     mditor.on('ready', function () {
-      console.log(mditor.value);
+      // console.log(mditor.value);
       // mditor.value = '** hello **';
       // mditor.fullscreen = true
     });
+
+    $('#form').on('submit', function () {
+      $.ajax({
+        url: '/article/add',
+        type: 'post',
+        data: $('#form').serialize(),
+        success: function (result) {
+          // console.log(result)
+          alert(result.msg)
+          if (result.status === 200) {
+            location.href = '/article/info/' + result.articleId
+          }
+        },
+        error: function (err) {
+          // console.log(err)
+          alert(err.responseJSON.msg)
+          if (err.responseJSON.status === 401) {
+            let newWindow = window.open('about:blank')
+            newWindow.location = '/login/reauth'
+          }
+        }
+      })
+      // 阻止浏览器默认行为
+      return false
+    })
   })
 
 </script>

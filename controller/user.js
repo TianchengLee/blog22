@@ -1,12 +1,5 @@
-const mysql = require('mysql')
 const moment = require('moment')
-
-const conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'blog'
-})
+const conn = require('../db')
 
 module.exports = {
   getRegisterHandler(req, res) {
@@ -55,7 +48,6 @@ module.exports = {
       req.session.userInfo = result[0]
       // 记录登录状态
       req.session.isLogin = true
-      // console.log(req.session)
       res.send({ status: 200, msg: '登录成功!' })
     })
   },

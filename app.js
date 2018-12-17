@@ -15,6 +15,9 @@ const session = require('express-session')
 
 const app = express()
 
+// 例如body-parser  就是在处理请求之前帮我们把 用户提交的表单信息 封装好了
+// 中间件的作用就是在处理请求之前  做一些封装操作
+// express-session帮我们做的事情就是 通过sessionID取出对应的session
 app.use(session({
   secret: 'keyboard cat',
   resave: false,

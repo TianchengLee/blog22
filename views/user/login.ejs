@@ -54,8 +54,11 @@
           type: 'post',
           data: $('#form').serialize(),
           success: function (result) {
-            // console.log(result)
+            // console.log(location)
             alert(result.msg)
+            if (location.pathname === '/login/reauth') {
+              return window.close()
+            }
             location.href = '/'
           },
           error: function (err) {
