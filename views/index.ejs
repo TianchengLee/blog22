@@ -1,6 +1,36 @@
 <%- include('./common/header.ejs') %>
 <!-- =表示纯文本渲染  -表示解析HTML标签后渲染 -->
 
-<h1>文章列表</h1>
+<div class="container">
+
+  <h1>文章列表</h1>
+
+  <div class="list-group" style="margin: 10px;">
+    <% articleInfos.forEach(item => { %>
+    <a href="/article/info/<%= item.id %>" class="list-group-item">
+      <%= item.title %>
+      <span class="badge hidden-xs" style="background-color: #5bc0de;">发表时间：
+        <%= item.ctime %> </span>
+      <span class="badge" style="background-color: #f0ad4e;">作者昵称：
+        <%= item.nickname %> </span>
+    </a>
+    <% }) %>
+  </div>
+  <!-- 分页区域 -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="<%= currentPage-1 === 0 ? 'disabled' : '' %>">
+          <span aria-hidden="true">&laquo;</span>
+      </li>
+      <% for(var i = 0; i < totalPage; i++){ %>
+      <li class="<%= currentPage === (i+1) ? 'active' : '' %>"><a href="?page=<%= i+1 %>">
+          <%= i+1 %></a></li>
+      <% } %>
+      <li class="<%= currentPage+1 > totalPage ? 'disabled' : ''  %>">
+          <span aria-hidden="true">&raquo;</span>
+      </li>
+    </ul>
+  </nav>
+</div>
 
 <%- include('./common/footer.ejs') %>

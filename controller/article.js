@@ -77,6 +77,8 @@ module.exports = {
   postArticleEditHandler(req, res) {
     // console.log(req.body)
     // console.log(req.params)
+    // 更新文章的时间
+    req.body.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
     conn.query('update articles set ? where id = ?', [req.body, req.params.id], (err, result) => {
       if (err || result.affectedRows !== 1) return res.status(500).send({status: 500, msg:'文章修改失败,请重试!'})
 
