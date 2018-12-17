@@ -1,0 +1,70 @@
+<%- include('../common/header.ejs') %>
+
+<link rel="stylesheet" href="/node_modules/mditor/dist/css/mditor.min.css">
+
+<script src="/node_modules/mditor/dist/js/mditor.min.js"></script>
+
+<div class="container">
+  <h1>编辑文章页</h1>
+  <hr>
+  <form id="form">
+    <!-- <input type="hidden" name="id" value="<%= articleInfo.id %>"> -->
+    <div class="form-group">
+      <label>文章标题：</label>
+      <input value="<%= articleInfo.title %>" type="text" name="title" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label>文章内容：</label>
+      <textarea name="content" class="form-control" id="editor">
+        <%= articleInfo.content %>
+      </textarea>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="保存文章" class="btn btn-primary">
+    </div>
+  </form>
+</div>
+
+<script>
+
+  $(function () {
+    var mditor = Mditor.fromTextarea(document.getElementById('editor'));
+
+    //获取或设置编辑器的值
+    mditor.on('ready', function () {
+      // console.log(mditor.value);
+      // mditor.value = '** hello **';
+      // mditor.fullscreen = true
+    });
+    
+    $('#form').on('submit', function () {
+      $.ajax({
+        url: '/article/edit/' + location.pathname.split('/').pop(),
+        type: 'post',
+        data: $('#form').serialize(), // title=xxx&content=xxx&id=
+        success: function (result) {
+          // console.log(result)
+          alert(result.msg)
+          if (result.status === 200) {
+            location.href = '/article/info/' + location.pathname.split('/').pop()
+          }
+        },
+        error: function (err) {
+          // console.log(err)
+          alert(err.responseJSON.msg)
+          if (err.responseJSON.status === 401) {
+            let newWindow = window.open('about:blank')
+            newWindow.location = '/login/reauth'
+          }
+        }
+      })
+      // 阻止浏览器默认行为
+      return false
+    })
+  })
+
+</script>
+
+<%- include('../common/footer.ejs') %>

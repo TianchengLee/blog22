@@ -53,5 +53,34 @@ module.exports = {
         articleInfo: result[0]
       })
     })
+  },
+  getArticleEditHandler(req, res) {
+    // 如果只做登录校验是不严谨的
+    // 应该加上作者的校验
+    if (!req.session.isLogin) return res.redirect('/')
+    // 文章ID
+    const articleId = parseInt(req.params.id)
+    // 根据文章ID查询数据库 获取文章详情信息
+    conn.query('select * from articles where id = ?', articleId, (err, result) => {
+      if (err || result.length !== 1) return res.redirect('/')
+      // 权限的控制: 如果当前登录的用户ID和作者ID不匹配 也不能渲染
+      if (req.session.userInfo.id != result[0].author_id) return res.redirect('/')
+      // 文章详情获取到了
+      res.render('article/edit', {
+        isLogin: req.session.isLogin,
+        userInfo: req.session.userInfo,
+        articleInfo: result[0]
+      })
+    })
+
+  },
+  postArticleEditHandler(req, res) {
+    // console.log(req.body)
+    // console.log(req.params)
+    conn.query('update articles set ? where id = ?', [req.body, req.params.id], (err, result) => {
+      if (err || result.affectedRows !== 1) return res.status(500).send({status: 500, msg:'文章修改失败,请重试!'})
+
+      res.send({status: 200, msg: '文章修改成功!'})
+    })
   }
 }
