@@ -1,5 +1,7 @@
 const moment = require('moment')
 const conn = require('../db')
+const bcrypt = require('bcryptjs')
+
 
 module.exports = {
   getRegisterHandler(req, res) {
@@ -21,6 +23,13 @@ module.exports = {
       // 能到此处 说明可以注册
       // 添加ctime字段
       userInfo.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+      
+      const salt = bcrypt.genSaltSync(10)
+      // 对密码进行加密
+      const hash = bcrypt.hashSync(userInfo.password, salt)
+      // console.log(hash)
+      userInfo.password = hash
+
       // console.log(userInfo)
       // 执行注册的sql语句  使用MySQL模块 注意insert into xxx set
       const registerSql = 'insert into users set ?'
@@ -39,10 +48,12 @@ module.exports = {
   postLoginHandler(req, res) {
     // console.log(req.body)
     // 1. 直接去数据库执行查询语句  条件 username和password
-    const loginSql = 'select * from users where username = ? and password = ?'
-    conn.query(loginSql, [req.body.username, req.body.password], (err, result) => {
+    const loginSql = 'select * from users where username = ?'
+    conn.query(loginSql, req.body.username, (err, result) => {
       // 如果查询出错 或者没有查询到结果 就提示登录失败
       if (err || result.length === 0) return res.status(400).send({ status: 400, msg: '登录失败!请重试!' })
+      // 使用bcrypt进行校验
+      if (!bcrypt.compareSync(req.body.password, result[0].password)) return res.status(400).send({ status: 400, msg: '登录失败!请重试!' }) 
       // 登录成功
       // 将用户信息存储在session中
       req.session.userInfo = result[0]
